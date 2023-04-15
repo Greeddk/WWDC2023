@@ -8,19 +8,19 @@ import PackageDescription
 import AppleProductTypes
 
 let package = Package(
-    name: "VersusMath",
+    name: "GhostLeg",
     platforms: [
         .iOS("15.2")
     ],
     products: [
         .iOSApplication(
-            name: "VersusMath",
+            name: "GhostLeg",
             targets: ["AppModule"],
-            bundleIdentifier: "com.greed.VersusMath",
+            bundleIdentifier: "com.greed.GhostLeg",
             displayVersion: "1.0",
             bundleVersion: "1",
             appIcon: .placeholder(icon: .movieReel),
-            accentColor: .presetColor(.green),
+            accentColor: .presetColor(.indigo),
             supportedDeviceFamilies: [
                 .pad,
                 .phone
