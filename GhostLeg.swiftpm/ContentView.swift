@@ -7,13 +7,14 @@ struct ContentView: View {
         NavigationView {
             
             VStack {
-                Image(systemName: "globe")
-                    .imageScale(.large)
-                    .foregroundColor(.accentColor)
-                Text("GhostLeg")
-                    .font(.system(size: 100))
-                
-                
+                Spacer()
+                Image("Icon")
+                    .resizable()
+                    .scaledToFit()
+                    .frame(width: 200, height: 200)
+                Image("SpiderWeb")
+                    .resizable()
+                    .scaledToFit()
                 Spacer().frame(height: 40)
                 
                 NavigationLink("Start") {
@@ -28,10 +29,14 @@ struct ContentView: View {
                     
                 }
                 .font(.system(size: 50))
-                .foregroundColor(.purple)
+                .foregroundColor(.teal)
+                
+                Spacer()
             }
         }
         .navigationViewStyle(StackNavigationViewStyle())
+        
+        
         
         
     }

@@ -10,5 +10,7 @@ class Data : ObservableObject {
     
     @Published var numberOfPeople : Int = 3
     @Published var numberOfWinner : Int = 1
+    
+    
 }
 

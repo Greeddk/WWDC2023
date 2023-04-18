@@ -10,34 +10,29 @@ import SwiftUI
 
 struct LadderView: View {
     
+    
     var body: some View {
         
-        GeometryReader{ geometry in
             VStack {
-                Text("Ghost Leg Lottery")
+                Text("Ladder Lottery Game")
                 Spacer()
-                
-                Text("여기엔 간단한 사다리타기 게임 설명이 들어가지요")
+                VStack(alignment: .leading) {
+                    Text("Description").font(.largeTitle)
+                    Text("1. Each participant starts at the top of the ladder and moves down the ladder using a horizontal line to the right or left.")
+                    Text("2. You can check the result by following the line directly from each starting point, or you can check the result at once")
+                    Text(" by pressing the result button at the bottom.")
+                }
                 
                 LadderGame()
-                    .frame( height: geometry.size.height/6*5)
-
-                
                 NavigationLink("Next Page") {
                     Description()
                 }
                 .font(.largeTitle)
-                .foregroundColor(.blue)
-                
-                
-                
+                .foregroundColor(.blue)                
             }
             
-        }
     }
 }
-
-
 
 struct LadderView_Previews: PreviewProvider {
     static var previews: some View {
