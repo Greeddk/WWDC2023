@@ -30,6 +30,9 @@ struct LadderView: View {
                 .font(.largeTitle)
                 .foregroundColor(.blue)                
             }
+            .onAppear {
+                SoundPlayer.shared.playSound(named: "Fun", withExtension: ".mp3")
+            }
             
     }
 }

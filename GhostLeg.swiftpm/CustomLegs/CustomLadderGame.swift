@@ -14,6 +14,8 @@ struct CustomLadderGame: View {
                                           [1,0,1,0,1,0,1,0,1,0,1,0,1,0,1,0,1],
                                           [1,0,1,0,1,0,1,0,1,0,1,0,1,0,1,0,1],
                                           [1,0,1,0,1,0,1,0,1,0,1,0,1,0,1,0,1],
+                                          [1,0,1,0,1,0,1,0,1,0,1,0,1,0,1,0,1],
+                                          [1,0,1,0,1,0,1,0,1,0,1,0,1,0,1,0,1],
                                           [1,0,1,0,1,0,1,0,1,0,1,0,1,0,1,0,1]]
         
         @State var atLeastOneHorizontal : Bool = true
@@ -40,10 +42,10 @@ struct CustomLadderGame: View {
                 HStack{
                         //가로 사다리
                         VStack {
-                            ForEach(0..<5, id: \.self) { i in
+                            ForEach(0..<7, id: \.self) { i in
                                 Image(LadderImg[LadderArr[i][0]])
                                     .resizable().aspectRatio(contentMode: .fit)
-                            }.padding([.leading, .trailing], -10)
+                            }.padding([.leading, .trailing], 0)
                         }.onAppear{
                             randomAnswer()
                         }
@@ -51,7 +53,7 @@ struct CustomLadderGame: View {
                             //세로 사다리
                             VStack {
                                 Text(PlayerName[i-1])
-                                ForEach(0..<5, id: \.self) { j in
+                                ForEach(0..<7, id: \.self) { j in
                                     Image(LadderImg[LadderArr[j][(i * 2) - 1]])
                                         .resizable().aspectRatio(contentMode: .fit)
                                 }.padding(.top, -20)
@@ -59,12 +61,11 @@ struct CustomLadderGame: View {
                             }
                             //가로 사다리
                             VStack {
-                                ForEach(0..<5, id: \.self) { j in
+                                ForEach(0..<7, id: \.self) { j in
                                     Image(LadderImg[LadderArr[j][i*2]])
                                         .resizable().aspectRatio(contentMode: .fit)
-                                }.padding([.leading, .trailing], -10)
+                                }.padding([.leading, .trailing], 0)
                             }
-                           
                         }
                 }//HStack
                     Spacer().frame(height: 50)
@@ -72,24 +73,26 @@ struct CustomLadderGame: View {
                         //사다리 생성을 위한 배열값 입력
                         atLeastOneHorizontal = false
                         while(!atLeastOneHorizontal){
-                            for i in 0..<5{
-                                for j in 0..<(data.numberOfPeople * 2)+1{
-                                    //사다리 세로줄 생성을 위한 배열값 입력
-                                    if(j%2 == 0){
-                                        LadderArr[i][j] = 0
-                                    }
-                                    //사다리 가로줄 생성을 위한 배열값 입력
-                                    else{
-                                        LadderArr[i][j] = Int.random(in:1...2)
-                                        //중복 안되게
-                                        if(j >= 3){
-                                            if(LadderArr[i][j-2] == 2){
-                                                LadderArr[i][j] = 1
+                            for i in 0..<data.numberOfPeople*2 {
+                                for j in 0..<7{
+                                    //가로줄 생성을 위한 배열값 입력
+                                    if(i%2==0){
+                                        LadderArr[j][i] = Int.random(in: 1...2)
+                                        if(i>=2){
+                                            if(LadderArr[j][i-2] == 2){
+                                                LadderArr[j][i] = 1
+                                            } else if(LadderArr[j][i+2] == 2){
+                                                LadderArr[j][i] = 1
                                             }
                                         }
-                                    }//else
-                                }
-                            }//for
+                                    }
+                                    //세로줄 생성을 위한 배열값 입력
+                                    if(i%2==1){
+                                        LadderArr[j][i] = 0
+                                    }
+                                    LadderArr[j][data.numberOfPeople*2] = LadderArr[j][0]
+                                }//for j
+                            }
                             examineHorizontal()
                         }//while
                         LadderResult = result()
@@ -125,22 +128,20 @@ struct CustomLadderGame: View {
                     numberOfWinner += 1
                 }
             }
-            
         }//func
-        
         
         func examineHorizontal() {
             var spaceCount : Int = 0
             
-            outer : for i in 1..<data.numberOfPeople{
+            outer : for i in 0..<data.numberOfPeople{
                 spaceCount = 0
-                for j in 0..<5{
-                    if(LadderArr[j][(2*i)-1] == 2){
+                for j in 0..<7{
+                    if(LadderArr[j][2*i] == 2){
                         atLeastOneHorizontal = true
                         break
-                    } else if (LadderArr[j][(2*i)-1] == 1){
+                    } else if (LadderArr[j][2*i] == 1){
                         spaceCount += 1
-                        if(spaceCount == 5){
+                        if(spaceCount == 6){
                             atLeastOneHorizontal = false
                             break outer
                         }
@@ -151,19 +152,20 @@ struct CustomLadderGame: View {
         
         func findDestination(_ playerNumber : Int) -> Int {
             //dfs
-            LadderCoorDinatex = 2*playerNumber
+            LadderCoorDinatex = 2*playerNumber + 1
             LadderCoorDinatey = 0
-            
-            while(LadderCoorDinatey != 5){
-                
-                if(LadderCoorDinatex == 0){
+            while(LadderCoorDinatey != 7){
+                if(LadderCoorDinatex == 1){
                     if(LadderArr[LadderCoorDinatey][LadderCoorDinatex+1] == 2){
                         LadderCoorDinatex += 2
                     }
+                    else if(LadderArr[LadderCoorDinatey][LadderCoorDinatex-1]==2){
+                        LadderCoorDinatex = data.numberOfPeople*2-1
+                    }
                 }
-                else if(LadderCoorDinatex <= (data.numberOfPeople*2)-4){
+                else if(LadderCoorDinatex >= (data.numberOfPeople*2)-1){
                     if(LadderArr[LadderCoorDinatey][LadderCoorDinatex+1] == 2){
-                        LadderCoorDinatex += 2
+                        LadderCoorDinatex = 1
                     }
                     else if(LadderArr[LadderCoorDinatey][LadderCoorDinatex-1] == 2){
                         LadderCoorDinatex -= 2
@@ -172,6 +174,9 @@ struct CustomLadderGame: View {
                 else{
                     if(LadderArr[LadderCoorDinatey][LadderCoorDinatex-1] == 2){
                         LadderCoorDinatex -= 2
+                    }
+                    else if(LadderArr[LadderCoorDinatey][LadderCoorDinatex+1] == 2){
+                        LadderCoorDinatex += 2
                     }
                 }
                 LadderCoorDinatey += 1

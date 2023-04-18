@@ -18,7 +18,7 @@ struct ContentView: View {
                 Spacer().frame(height: 40)
                 
                 NavigationLink("Start") {
-                    InputView()
+                    LadderView()
                 }
                 .font(.system(size: 50))
                 .foregroundColor(.blue)
@@ -26,7 +26,7 @@ struct ContentView: View {
                 Spacer().frame(height: 40)
                 
                 NavigationLink("Custom") {
-                    
+                    InputView()
                 }
                 .font(.system(size: 50))
                 .foregroundColor(.teal)

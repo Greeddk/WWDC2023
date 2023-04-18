@@ -61,7 +61,7 @@ struct InputView: View {
             //다음페이지로 넘어가기
             if(data.numberOfPeople>data.numberOfWinner){
                 NavigationLink("Next") {
-                    LadderView()
+                    CustomLadderView()
                 }
                 .navigationBarTitle("Setting")
                 .font(.largeTitle)

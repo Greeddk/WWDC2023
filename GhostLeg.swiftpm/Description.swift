@@ -9,17 +9,20 @@ import SwiftUI
 
 struct Description: View {
     var body: some View {
-        
-        
-        VStack {
-            NavigationView{
-                    RoundedRectangle(cornerSize: .init(width:16, height: 16)).padding(-20)
-                        .overlay {  DetailDescription1() }
-                        .frame(width: UIScreen.main.bounds.width/4*3, height: UIScreen.main.bounds.height / 5*4)
-                        .foregroundColor(.gray)
-                
-            }.navigationViewStyle(StackNavigationViewStyle())
-        }
+        NavigationView{
+            VStack {
+                Spacer()
+                RoundedRectangle(cornerSize: .init(width:16, height: 16)).padding(-20)
+                    .overlay {  DetailDescription1() }
+                    .frame(width: UIScreen.main.bounds.width/4*3, height: UIScreen.main.bounds.height / 5*4)
+                    .foregroundColor(.gray)
+                Spacer()
+                NavigationLink("Next"){
+                    CustomLadderView()
+                }.font(.system(size: 50))
+                    .foregroundColor(.blue)
+            }//VStack
+        }.navigationViewStyle(StackNavigationViewStyle())
     }
 }
 
@@ -29,8 +32,8 @@ struct DetailDescription1: View {
         
         VStack {
             Text(" One of the many ways to bet with people in Korea is to play ladder games, which gives people a sense of urgency because of the non-overlapping nature of the outcomes. So you might think that you have the same odds no matter which number you choose, but that's not the case. Ladder games are the most unfair games because the odds are different at the start and end points, and there are ways to use this to increase your chances of winning." )
-                    .lineSpacing(10)
-                    .font(.largeTitle)
+                .lineSpacing(10)
+                .font(.largeTitle)
                 .foregroundColor(.white)
         }
     }
@@ -41,8 +44,8 @@ struct DetailDescription2: View {
         
         VStack {
             Text(" In fact, a simulation of 1000 randomized ladders showed that there was a 21% chance that P4 would be the winner when the winner was on the 4th position, and only a 3.3% chance that P8 would be the winner. According to the law of large numbers, the probability of being a winner should be 12.5% regardless of the number, since more trials should approach the probability, but this was not the case. Similarly, if the first arrival was a winner, you were more likely to be a winner if you chose P1, and if the eighth arrival was a winner, you were more likely to be a winner if you chose P8." )
-                    .lineSpacing(20)
-                    .font(.largeTitle)
+                .lineSpacing(20)
+                .font(.largeTitle)
                 .foregroundColor(.white)
         }
     }
@@ -53,8 +56,8 @@ struct DetailDescription3: View {
         
         VStack {
             Text(" The reason for this is that the first player's ladder and the last player's ladder are not connected. \n If you start on P1, there's a 100% chance that you'll move to P2's vertical row because there's at least one horizontal row in the middle. If there was only one horizontal row in the middle of P1, you would have a 0% chance of reaching the first destination when you picked P1. This is where the ladder already runs into trouble: if you start at P2, you have a 50% chance of moving to the ladder at P1 or P3.  In other words, the ladder is an unfair game by design." )
-                    .lineSpacing(20)
-                    .font(.largeTitle)
+                .lineSpacing(20)
+                .font(.largeTitle)
                 .foregroundColor(.white)
         }
     }
@@ -65,8 +68,8 @@ struct DetailDescription4: View {
         
         VStack {
             Text(" The ladder game also determines your destination based on how many times you go through the horizontal rungs. If you go through the rungs an even number of times, you will land on an odd number of rungs, including yourself. For example, if you choose P1 and go through the rungs an even number of times, you will only reach the first destination, the third destination two spaces away, the fifth destination four spaces away, and the seventh destination six spaces away." )
-                    .lineSpacing(20)
-                    .font(.largeTitle)
+                .lineSpacing(20)
+                .font(.largeTitle)
                 .foregroundColor(.white)
         }
     }
@@ -77,8 +80,8 @@ struct DetailDescription5: View {
         
         VStack {
             Text(" But that doesn't mean the ladder is always unfair: the more horizontal lines you draw, the closer the odds are to 12.5%. The number of horizontal lines needed depends on the number of vertical lines, and if n is the number of vertical lines, the formula is n(n-1)^2, which means that a ladder with 8 people will be fair when 392 horizontal lines are drawn. But that's not a realistic way to do it. And that's if you know where the winnings are. So what's the solution?" )
-                    .lineSpacing(20)
-                    .font(.largeTitle)
+                .lineSpacing(20)
+                .font(.largeTitle)
                 .foregroundColor(.white)
         }
     }
@@ -88,9 +91,9 @@ struct DetailDescription6: View {
     var body: some View {
         
         VStack {
-            Text(" 가장 쉬운 방법은 양 끝의 라인을 연결하는 것입니다. 아래의 next 버튼을 눌러서 공평한 사다리타기 게임을 하러 가볼까요?" )
-                    .lineSpacing(20)
-                    .font(.largeTitle)
+            Text(" The easiest way to fix this is to connect the lines at both ends. Hit the NEXT button below and let's go play some more fair ladder games." )
+                .lineSpacing(20)
+                .font(.largeTitle)
                 .foregroundColor(.white)
         }
     }
