@@ -7,13 +7,15 @@ struct LadderGame: View {
                                       [0,1,0,1,0,1,0,1,0,1,0,1,0,1,0],
                                       [0,1,0,1,0,1,0,1,0,1,0,1,0,1,0],
                                       [0,1,0,1,0,1,0,1,0,1,0,1,0,1,0],
+                                      [0,1,0,1,0,1,0,1,0,1,0,1,0,1,0],
+                                      [0,1,0,1,0,1,0,1,0,1,0,1,0,1,0],
                                       [0,1,0,1,0,1,0,1,0,1,0,1,0,1,0]]
     
     @State var RedLadder : [[Int]] = []
     
     @State var atLeastOneHorizontal : Bool = true
     
-    let LadderImg : [String] = ["Vertical", "Space", "Horizontal2","None", "VerticalRed", "HorizontalRed2"]
+    let LadderImg : [String] = ["Vertical", "Space", "Horizontal3","None", "VerticalRed", "HorizontalRed2"]
     let PlayerName : [String] = ["P1", "P2","P3", "P4", "P5", "P6", "P7", "P8"]
     
     @State var AnswerArr : [Int] = [0,0,1,0,0,0,0,0]
@@ -32,42 +34,56 @@ struct LadderGame: View {
     
     var body: some View {
         VStack{
-            HStack{
-                VStack {
-                    Text(PlayerName[0])
-                    
-                    ForEach(0..<5, id: \.self) { j in
-                        Image(LadderImg[LadderArr[j][0]])
-                            .resizable().aspectRatio(contentMode: .fit)
-                    }
-                    .padding(.top, -20)
-                    Text("\(AnswerText[AnswerArr[0]])")
-                }
-                ForEach(1..<(data.numberOfPeople), id: \.self) { i in
+            ZStack{
+                HStack{
                     VStack {
-                        ForEach(0..<5, id: \.self) { j in
-                            Image(LadderImg[LadderArr[j][(i * 2) - 1]])
-                                .resizable().aspectRatio(contentMode: .fit)
-                        }.padding([.leading, .trailing], -10)
-                    }
-                    VStack {
-                        Text(PlayerName[i])
-                        ForEach(0..<5, id: \.self) { j in
-                            Image(LadderImg[LadderArr[j][i * 2]])
+                        Button(PlayerName[0]){
+                            redLine(0)
+                        }
+                        ForEach(0..<7, id: \.self) { j in
+                            Image(LadderImg[LadderArr[j][0]])
                                 .resizable().aspectRatio(contentMode: .fit)
                         }
                         .padding(.top, -20)
-                        Text("\(AnswerText[AnswerArr[i]])")
+                        Text("\(AnswerText[AnswerArr[0]])")
                     }
-                }
-            }//HStack
+                    ForEach(1..<(data.numberOfPeople), id: \.self) { i in
+                        VStack {
+                            ForEach(0..<7, id: \.self) { j in
+                                Image(LadderImg[LadderArr[j][(i * 2) - 1]])
+                                    .resizable().aspectRatio(contentMode: .fit)
+                            }
+                            .padding([.leading, .trailing], -10)
+                        }
+                        VStack {
+                            Button(PlayerName[i]){
+                                redLine(i)
+                            }
+                            ForEach(0..<7, id: \.self) { j in
+                                Image(LadderImg[LadderArr[j][i * 2]])
+                                    .resizable().aspectRatio(contentMode: .fit)
+                            }
+                            .padding(.top, -20)
+                            Text("\(AnswerText[AnswerArr[i]])")
+                        }
+                    }
+                }//HStack
+            }
             
             Spacer().frame(height: 50)
             Button(action: {
                 //사다리 생성을 위한 배열값 입력
                 atLeastOneHorizontal = false
+                for i in 0..<data.numberOfPeople*2-1{
+                    if(i%2==0){
+                        LadderArr[6][i] = 0
+                    }
+                    else{
+                        LadderArr[6][i] = 1
+                    }
+                }
                 while(!atLeastOneHorizontal){
-                    for i in 0..<5{
+                    for i in 1..<6{
                         for j in 0..<(data.numberOfPeople * 2)-1{
                             //사다리 세로줄 생성을 위한 배열값 입력
                             if(j%2 == 0){
@@ -87,6 +103,14 @@ struct LadderGame: View {
                     }//for
                     examineHorizontal()
                 }//while
+                for i in 0..<data.numberOfPeople*2-1{
+                    if(i%2==0){
+                        LadderArr[0][i] = 0
+                    }
+                    else{
+                        LadderArr[0][i] = 1
+                    }
+                }
                 LadderResult = result()
                 ButtonClicked += 1
                 print(LadderArr)
@@ -105,83 +129,67 @@ struct LadderGame: View {
             } message: {
                 Text(LadderResult)
             }
-            //결과 한줄 보여주는 버튼
-            Button("1") {
-                redLine(0)
-                print(LadderArr)
-                print(LadderCoorDinatex, LadderCoorDinatey)
-            }
-            
         }//VStack
         .padding(.all, 20.0)
     }
-     // Mark: - 빨간색으로 결과까지 이어주는 함수
-        func redLine(_ playerNumber : Int){
-    
-            //dfs
-            LadderCoorDinatex = 2*playerNumber
-            LadderCoorDinatey = 0
-            //verticalred : 4, horizontalred : 5
-            while(LadderCoorDinatey != 5){
-                if(LadderCoorDinatey == 0){
-                    if(LadderArr[LadderCoorDinatey][LadderCoorDinatex+1] == 2){
-                        LadderArr[LadderCoorDinatey][LadderCoorDinatex] = 4
-                        LadderArr[LadderCoorDinatey][LadderCoorDinatex+1] = 5
-                        LadderCoorDinatex += 2
-                    }
+    // Mark: - 빨간색으로 결과까지 이어주는 함수
+    func redLine(_ playerNumber : Int){
+        //VerticalRed:4, HorizontalRed:5
+        //dfs
+        LadderCoorDinatex = 2*playerNumber
+        LadderCoorDinatey = 0
+        
+        // 초기화 코드
+        for i in 0..<7 {
+            for j in 0..<data.numberOfPeople*2-1 {
+                if(LadderArr[i][j] == 4){
+                    LadderArr[i][j] = 0
                 }
-                else if(LadderCoorDinatey == 1){
-                    if(LadderArr[LadderCoorDinatey][LadderCoorDinatex+1] == 2){
-                        LadderArr[LadderCoorDinatey][LadderCoorDinatex] = 4
-                        LadderArr[LadderCoorDinatey][LadderCoorDinatex+1] = 5
-                        LadderCoorDinatex += 2
-                    }
-                    else if(LadderArr[LadderCoorDinatey][LadderCoorDinatex-1] == 2){
-                        LadderArr[LadderCoorDinatey][LadderCoorDinatex] = 4
-                        LadderArr[LadderCoorDinatey][LadderCoorDinatex-1] = 5
-                        LadderCoorDinatex -= 2
-                    }
+                else if(LadderArr[i][j] == 5) {
+                    LadderArr[i][j] = 2
                 }
-                else if(LadderCoorDinatey == 2){
-                    if(LadderArr[LadderCoorDinatey][LadderCoorDinatex+1] == 2){
-                        LadderArr[LadderCoorDinatey][LadderCoorDinatex] = 4
-                        LadderArr[LadderCoorDinatey][LadderCoorDinatex+1] = 5
-                        LadderCoorDinatex += 2
-                    }
-                    else if(LadderArr[LadderCoorDinatey][LadderCoorDinatex-1] == 2){
-                        LadderArr[LadderCoorDinatey][LadderCoorDinatex] = 4
-                        LadderArr[LadderCoorDinatey][LadderCoorDinatex-1] = 5
-                        LadderCoorDinatex -= 2
-                    }
+            }
+        }
+        
+
+        while(LadderCoorDinatey != 7){
+            if(LadderCoorDinatex == 0){
+                if(LadderArr[LadderCoorDinatey][LadderCoorDinatex+1] == 2){
+                    LadderArr[LadderCoorDinatey][LadderCoorDinatex] = 4
+                    LadderArr[LadderCoorDinatey][LadderCoorDinatex+1] = 5
+                    LadderCoorDinatex += 2
+                }else{
+                    LadderArr[LadderCoorDinatey][LadderCoorDinatex] = 4
                 }
-                else if(LadderCoorDinatey == 3){
-                    if(LadderArr[LadderCoorDinatey][LadderCoorDinatex+1] == 2){
-                        LadderArr[LadderCoorDinatey][LadderCoorDinatex] = 4
-                        LadderArr[LadderCoorDinatey][LadderCoorDinatex+1] = 5
-                        LadderCoorDinatex += 2
-                    }
-                    else if(LadderArr[LadderCoorDinatey][LadderCoorDinatex-1] == 2){
-                        LadderArr[LadderCoorDinatey][LadderCoorDinatex] = 4
-                        LadderArr[LadderCoorDinatey][LadderCoorDinatex-1] = 5
-                        LadderCoorDinatex -= 2
-                    }
+            }
+            else if(LadderCoorDinatex <= (data.numberOfPeople*2)-4){
+                if(LadderArr[LadderCoorDinatey][LadderCoorDinatex+1] == 2){
+                    LadderArr[LadderCoorDinatey][LadderCoorDinatex] = 4
+                    LadderArr[LadderCoorDinatey][LadderCoorDinatex+1] = 5
+                    LadderCoorDinatex += 2
                 }
-                else if(LadderCoorDinatey == 4){
-                    if(LadderArr[LadderCoorDinatey][LadderCoorDinatex+1] == 2){
-                        LadderArr[LadderCoorDinatey][LadderCoorDinatex] = 4
-                        LadderArr[LadderCoorDinatey][LadderCoorDinatex+1] = 5
-                        LadderCoorDinatex += 2
-                    }
-                    else if(LadderArr[LadderCoorDinatey][LadderCoorDinatex-1] == 2){
-                        LadderArr[LadderCoorDinatey][LadderCoorDinatex] = 4
-                        LadderArr[LadderCoorDinatey][LadderCoorDinatex-1] = 5
-                        LadderCoorDinatex -= 2
-                    }
+                else if(LadderArr[LadderCoorDinatey][LadderCoorDinatex-1] == 2){
+                    LadderArr[LadderCoorDinatey][LadderCoorDinatex] = 4
+                    LadderArr[LadderCoorDinatey][LadderCoorDinatex-1] = 5
+                    LadderCoorDinatex -= 2
                 }
-                LadderArr[LadderCoorDinatey][LadderCoorDinatex] = 4
-                LadderCoorDinatey += 1
-            }//while
-        }//func
+                else{
+                    LadderArr[LadderCoorDinatey][LadderCoorDinatex] = 4
+                }
+            }
+            else{
+                if(LadderArr[LadderCoorDinatey][LadderCoorDinatex-1] == 2){
+                    LadderArr[LadderCoorDinatey][LadderCoorDinatex] = 4
+                    LadderArr[LadderCoorDinatey][LadderCoorDinatex-1] = 5
+                    LadderCoorDinatex -= 2
+                }
+                else{
+                    LadderArr[LadderCoorDinatey][LadderCoorDinatex] = 4
+                }
+            }
+            LadderCoorDinatey += 1
+        }//while
+    }//func
     
     func randomAnswer(){
         numberOfWinner = 0
@@ -207,10 +215,10 @@ struct LadderGame: View {
         outer : for i in 1..<data.numberOfPeople{
             spaceCount = 0
             for j in 0..<5{
-                if(LadderArr[j][(2*i)-1] == 2){
+                if(LadderArr[j+1][(2*i)-1] == 2){
                     atLeastOneHorizontal = true
                     break
-                } else if (LadderArr[j][(2*i)-1] == 1){
+                } else if (LadderArr[j+1][(2*i)-1] == 1){
                     spaceCount += 1
                     if(spaceCount == 5){
                         atLeastOneHorizontal = false
@@ -226,23 +234,23 @@ struct LadderGame: View {
         LadderCoorDinatex = 2*playerNumber
         LadderCoorDinatey = 0
         
-        while(LadderCoorDinatey != 5){
+        while(LadderCoorDinatey != 6){
             
             if(LadderCoorDinatex == 0){
-                if(LadderArr[LadderCoorDinatey][LadderCoorDinatex+1] == 2){
+                if(LadderArr[LadderCoorDinatey+1][LadderCoorDinatex+1] == 2){
                     LadderCoorDinatex += 2
                 }
             }
             else if(LadderCoorDinatex <= (data.numberOfPeople*2)-4){
-                if(LadderArr[LadderCoorDinatey][LadderCoorDinatex+1] == 2){
+                if(LadderArr[LadderCoorDinatey+1][LadderCoorDinatex+1] == 2){
                     LadderCoorDinatex += 2
                 }
-                else if(LadderArr[LadderCoorDinatey][LadderCoorDinatex-1] == 2){
+                else if(LadderArr[LadderCoorDinatey+1][LadderCoorDinatex-1] == 2){
                     LadderCoorDinatex -= 2
                 }
             }
             else{
-                if(LadderArr[LadderCoorDinatey][LadderCoorDinatex-1] == 2){
+                if(LadderArr[LadderCoorDinatey+1][LadderCoorDinatex-1] == 2){
                     LadderCoorDinatex -= 2
                 }
             }

@@ -24,18 +24,18 @@ struct ContentView: View {
                 }
                 .padding(20)
                 Spacer()
-                Image("PortalLeft")
-                    .resizable()
-                    .scaledToFit()
-                    .frame(width: 200, height: 200)
-                Image("PortalRight")
-                    .resizable()
-                    .scaledToFit()
-                    .frame(width: 200, height: 200)
-                Image("SpiderWeb")
-                    .resizable()
-                    .scaledToFit()
-                Spacer().frame(height: 40)
+                HStack{
+                    Image("PortalLeft")
+                        .resizable()
+                        .scaledToFit()
+                        .frame(width: 200, height: 200)
+                    Text("Portal Ladder Game")
+                        .font(.largeTitle)
+                    Image("PortalRight")
+                        .resizable()
+                        .scaledToFit()
+                        .frame(width: 200, height: 200)
+                }
                 
                 NavigationLink("Start") {
                     LadderView()
