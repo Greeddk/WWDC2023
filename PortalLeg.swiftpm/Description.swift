@@ -19,55 +19,55 @@ struct Description: View {
     @State var textidx : Int = 0
     
     var body: some View {
-
-            ZStack {
-                VStack(alignment: .center) {
-                    Spacer()
-                    Image(imgnames[textidx])
-                        .resizable()
-                        .aspectRatio(contentMode: .fit)
-                        .padding(.vertical,8.0)
-                        .padding(.top,2.7)
-                        .frame(height: 400)
+        
+        ZStack {
+            VStack(alignment: .center) {
+                Spacer()
+                Image(imgnames[textidx])
+                    .resizable()
+                    .aspectRatio(contentMode: .fit)
+                    .padding(.vertical,8.0)
+                    .padding(.top,2.7)
+                    .frame(height: 400)
                 
-                    CardView{
-                        Text(maintext[textidx])
-                            .foregroundColor(.black)
-                            .font(.title)
-                            .padding(.horizontal)
-                            .padding()
-                            .padding([.top, .bottom], 30)
-                    }
-                    Spacer()
-                    HStack{
-                        Button(action:{rightOpacity=100.0
-                            if(textidx != 0){textidx = textidx - 1
-                                if(textidx == 0){leftOpacity = 0.0}}}, label:{ Text("<").font(.largeTitle).foregroundColor(.black)})
-                        .padding(.trailing)
-                        .opacity(leftOpacity)
-                        
-                        HStack {
-                            Text(String(textidx+1)).font(.title).foregroundColor(.black)
-                        }.frame(width: 16.5)
-                        Text(" / ").font(.title).foregroundColor(.black)
-                        HStack {
-                            Text("5").font(.title).foregroundColor(.black)
-                        }.frame(width: 16.5)
-                        
-                        Button(action:{leftOpacity = 100.0
-                            if(textidx != 4){textidx = textidx + 1
-                                if(textidx == 4){rightOpacity = 0.0}}}, label:{Text(">").font(.largeTitle).foregroundColor(.black)})
-                        .padding(.leading)
-                        .opacity(rightOpacity)
-                    }
-                    .padding(.bottom)
-                    
-                    NavigationLink("Portal Ladder Game!"){
-                        CustomLadderView()
-                    }
+                CardView{
+                    Text(maintext[textidx])
+                        .foregroundColor(.black)
+                        .font(.title)
+                        .padding(.horizontal)
+                        .padding()
+                        .padding([.top, .bottom], 30)
                 }
-            }.padding([.top,.leading,.trailing])
-                .padding(.bottom,35.0)
+                Spacer()
+                HStack{
+                    Button(action:{rightOpacity=100.0
+                        if(textidx != 0){textidx = textidx - 1
+                            if(textidx == 0){leftOpacity = 0.0}}}, label:{ Text("<").font(.largeTitle).foregroundColor(.black)})
+                    .padding(.trailing)
+                    .opacity(leftOpacity)
+                    
+                    HStack {
+                        Text(String(textidx+1)).font(.title).foregroundColor(.black)
+                    }.frame(width: 16.5)
+                    Text(" / ").font(.title).foregroundColor(.black)
+                    HStack {
+                        Text("5").font(.title).foregroundColor(.black)
+                    }.frame(width: 16.5)
+                    
+                    Button(action:{leftOpacity = 100.0
+                        if(textidx != 4){textidx = textidx + 1
+                            if(textidx == 4){rightOpacity = 0.0}}}, label:{Text(">").font(.largeTitle).foregroundColor(.black)})
+                    .padding(.leading)
+                    .opacity(rightOpacity)
+                }
+                .padding(.bottom)
+                
+                NavigationLink("Portal Ladder Game!"){
+                    CustomLadderView()
+                }
+            }
+        }.padding([.top,.leading,.trailing])
+            .padding(.bottom,35.0)
     }
 }
 

@@ -48,6 +48,11 @@
 			<key>primary</key>
 			<true/>
 		</dict>
+		<key>Portal leg</key>
+		<dict>
+			<key>primary</key>
+			<true/>
+		</dict>
 	</dict>
 </dict>
 </plist>

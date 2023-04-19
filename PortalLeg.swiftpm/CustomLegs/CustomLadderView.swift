@@ -21,8 +21,13 @@ struct CustomLadderView: View {
             NavigationLink("Home") {
                 ContentView()
             }
+            .onTapGesture {
+                SoundPlayer.shared.stop()
+                SoundPlayer.shared.playSound(named: "Fun", withExtension: ".mp3")
+            }
             .font(.largeTitle)
             .foregroundColor(.blue)
+            
         }
         .onAppear {
             SoundPlayer.shared.stop()

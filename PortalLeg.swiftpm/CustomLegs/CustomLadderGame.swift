@@ -48,7 +48,7 @@ struct CustomLadderGame: View {
                     ForEach(0..<9, id: \.self) { i in
                         Image(LadderImg[LadderArr[i][0]])
                             .resizable().aspectRatio(contentMode: .fit)
-                    }.padding([.leading, .trailing], 0)
+                    }.padding([.leading, .trailing], -10)
                 }.onAppear{
                     randomAnswer()
                 }
@@ -69,7 +69,7 @@ struct CustomLadderGame: View {
                         ForEach(0..<9, id: \.self) { j in
                             Image(LadderImg[LadderArr[j][i*2]])
                                 .resizable().aspectRatio(contentMode: .fit)
-                        }.padding([.leading, .trailing], 0)
+                        }.padding([.leading, .trailing], -10)
                     }
                 }
             }//HStack

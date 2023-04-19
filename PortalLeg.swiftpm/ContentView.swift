@@ -7,6 +7,8 @@ struct ContentView: View {
     var body: some View {
         ZStack {
             Image("main")
+                .resizable()
+                .ignoresSafeArea(.all)
                 VStack {
                     HStack{
                         Button {
