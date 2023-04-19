@@ -9,9 +9,11 @@ struct LadderGame: View {
                                       [0,1,0,1,0,1,0,1,0,1,0,1,0,1,0],
                                       [0,1,0,1,0,1,0,1,0,1,0,1,0,1,0]]
     
+    @State var RedLadder : [[Int]] = []
+    
     @State var atLeastOneHorizontal : Bool = true
     
-    let LadderImg : [String] = ["Vertical", "Space", "Horizontal","None"]
+    let LadderImg : [String] = ["Vertical", "Space", "Horizontal2","None", "VerticalRed", "HorizontalRed2"]
     let PlayerName : [String] = ["P1", "P2","P3", "P4", "P5", "P6", "P7", "P8"]
     
     @State var AnswerArr : [Int] = [0,0,1,0,0,0,0,0]
@@ -22,7 +24,7 @@ struct LadderGame: View {
     @State var LadderResult : String = "-"
     @State var numberOfWinner : Int = 0
     @State var numberOfLooser : Int = 0
-
+    
     @State var ButtonClicked : Int = 0
     
     @State private var showingAlert = false
@@ -33,75 +35,153 @@ struct LadderGame: View {
             HStack{
                 VStack {
                     Text(PlayerName[0])
-                        
+                    
                     ForEach(0..<5, id: \.self) { j in
                         Image(LadderImg[LadderArr[j][0]])
                             .resizable().aspectRatio(contentMode: .fit)
-                    }.padding(.top, -20)
+                    }
+                    .padding(.top, -20)
                     Text("\(AnswerText[AnswerArr[0]])")
                 }
+                ForEach(1..<(data.numberOfPeople), id: \.self) { i in
+                    VStack {
+                        ForEach(0..<5, id: \.self) { j in
+                            Image(LadderImg[LadderArr[j][(i * 2) - 1]])
+                                .resizable().aspectRatio(contentMode: .fit)
+                        }.padding([.leading, .trailing], -10)
+                    }
+                    VStack {
+                        Text(PlayerName[i])
+                        ForEach(0..<5, id: \.self) { j in
+                            Image(LadderImg[LadderArr[j][i * 2]])
+                                .resizable().aspectRatio(contentMode: .fit)
+                        }
+                        .padding(.top, -20)
+                        Text("\(AnswerText[AnswerArr[i]])")
+                    }
+                }
+            }//HStack
+            
+            Spacer().frame(height: 50)
+            Button(action: {
+                //사다리 생성을 위한 배열값 입력
+                atLeastOneHorizontal = false
+                while(!atLeastOneHorizontal){
+                    for i in 0..<5{
+                        for j in 0..<(data.numberOfPeople * 2)-1{
+                            //사다리 세로줄 생성을 위한 배열값 입력
+                            if(j%2 == 0){
+                                LadderArr[i][j] = 0
+                            }
+                            //사다리 가로줄 생성을 위한 배열값 입력
+                            else{
+                                LadderArr[i][j] = Int.random(in:1...2)
+                                //중복 안되게
+                                if(j >= 3){
+                                    if(LadderArr[i][j-2] == 2){
+                                        LadderArr[i][j] = 1
+                                    }
+                                }
+                            }//else
+                        }
+                    }//for
+                    examineHorizontal()
+                }//while
+                LadderResult = result()
+                ButtonClicked += 1
+                print(LadderArr)
+            }, label: {Text("MakeLadder").font(.largeTitle).foregroundColor(.blue)}
+            )//.disabled(ButtonClicked == 1 ? true : false )
+            Spacer().frame(height: 50)
                 .onAppear{
                     randomAnswer()
                 }
-                    ForEach(1..<(data.numberOfPeople), id: \.self) { i in
-                        VStack {
-                            ForEach(0..<5, id: \.self) { j in
-                                Image(LadderImg[LadderArr[j][(i * 2) - 1]])
-                                    .resizable().aspectRatio(contentMode: .fit)
-                            }.padding([.leading, .trailing], -10)
-                        }
-                        VStack {
-                            Text(PlayerName[i])
-                            ForEach(0..<5, id: \.self) { j in
-                                Image(LadderImg[LadderArr[j][i * 2]])
-                                    .resizable().aspectRatio(contentMode: .fit)
-                            }.padding(.top, -20)
-                            Text("\(AnswerText[AnswerArr[i]])")
-                        }
-                    }
-            }//HStack
-                Spacer().frame(height: 50)
-                Button(action: {
-                    //사다리 생성을 위한 배열값 입력
-                    atLeastOneHorizontal = false
-                    while(!atLeastOneHorizontal){
-                        for i in 0..<5{
-                            for j in 0..<(data.numberOfPeople * 2)-1{
-                                //사다리 세로줄 생성을 위한 배열값 입력
-                                if(j%2 == 0){
-                                    LadderArr[i][j] = 0
-                                }
-                                //사다리 가로줄 생성을 위한 배열값 입력
-                                else{
-                                    LadderArr[i][j] = Int.random(in:1...2)
-                                    //중복 안되게
-                                    if(j >= 3){
-                                        if(LadderArr[i][j-2] == 2){
-                                            LadderArr[i][j] = 1
-                                        }
-                                    }
-                                }//else
-                            }
-                        }//for
-                        examineHorizontal()
-                    }//while
-                    LadderResult = result()
-                    ButtonClicked += 1
-                }, label: {Text("MakeLadder").font(.largeTitle).foregroundColor(.blue)}
-                )//.disabled(ButtonClicked == 1 ? true : false )
-                Spacer().frame(height: 50)
-                //결과 보여주는 버튼
-                Button("Show Result") {
-                    showingAlert = true
-                }
-                .alert("Result", isPresented: $showingAlert) {
-                    Button("Ok") {}
-                } message: {
-                    Text(LadderResult)
-                }
+            //결과 보여주는 버튼
+            Button("Show Result") {
+                showingAlert = true
+            }
+            .alert("Result", isPresented: $showingAlert) {
+                Button("Ok") {}
+            } message: {
+                Text(LadderResult)
+            }
+            //결과 한줄 보여주는 버튼
+            Button("1") {
+                redLine(0)
+                print(LadderArr)
+                print(LadderCoorDinatex, LadderCoorDinatey)
+            }
+            
         }//VStack
         .padding(.all, 20.0)
     }
+     // Mark: - 빨간색으로 결과까지 이어주는 함수
+        func redLine(_ playerNumber : Int){
+    
+            //dfs
+            LadderCoorDinatex = 2*playerNumber
+            LadderCoorDinatey = 0
+            //verticalred : 4, horizontalred : 5
+            while(LadderCoorDinatey != 5){
+                if(LadderCoorDinatey == 0){
+                    if(LadderArr[LadderCoorDinatey][LadderCoorDinatex+1] == 2){
+                        LadderArr[LadderCoorDinatey][LadderCoorDinatex] = 4
+                        LadderArr[LadderCoorDinatey][LadderCoorDinatex+1] = 5
+                        LadderCoorDinatex += 2
+                    }
+                }
+                else if(LadderCoorDinatey == 1){
+                    if(LadderArr[LadderCoorDinatey][LadderCoorDinatex+1] == 2){
+                        LadderArr[LadderCoorDinatey][LadderCoorDinatex] = 4
+                        LadderArr[LadderCoorDinatey][LadderCoorDinatex+1] = 5
+                        LadderCoorDinatex += 2
+                    }
+                    else if(LadderArr[LadderCoorDinatey][LadderCoorDinatex-1] == 2){
+                        LadderArr[LadderCoorDinatey][LadderCoorDinatex] = 4
+                        LadderArr[LadderCoorDinatey][LadderCoorDinatex-1] = 5
+                        LadderCoorDinatex -= 2
+                    }
+                }
+                else if(LadderCoorDinatey == 2){
+                    if(LadderArr[LadderCoorDinatey][LadderCoorDinatex+1] == 2){
+                        LadderArr[LadderCoorDinatey][LadderCoorDinatex] = 4
+                        LadderArr[LadderCoorDinatey][LadderCoorDinatex+1] = 5
+                        LadderCoorDinatex += 2
+                    }
+                    else if(LadderArr[LadderCoorDinatey][LadderCoorDinatex-1] == 2){
+                        LadderArr[LadderCoorDinatey][LadderCoorDinatex] = 4
+                        LadderArr[LadderCoorDinatey][LadderCoorDinatex-1] = 5
+                        LadderCoorDinatex -= 2
+                    }
+                }
+                else if(LadderCoorDinatey == 3){
+                    if(LadderArr[LadderCoorDinatey][LadderCoorDinatex+1] == 2){
+                        LadderArr[LadderCoorDinatey][LadderCoorDinatex] = 4
+                        LadderArr[LadderCoorDinatey][LadderCoorDinatex+1] = 5
+                        LadderCoorDinatex += 2
+                    }
+                    else if(LadderArr[LadderCoorDinatey][LadderCoorDinatex-1] == 2){
+                        LadderArr[LadderCoorDinatey][LadderCoorDinatex] = 4
+                        LadderArr[LadderCoorDinatey][LadderCoorDinatex-1] = 5
+                        LadderCoorDinatex -= 2
+                    }
+                }
+                else if(LadderCoorDinatey == 4){
+                    if(LadderArr[LadderCoorDinatey][LadderCoorDinatex+1] == 2){
+                        LadderArr[LadderCoorDinatey][LadderCoorDinatex] = 4
+                        LadderArr[LadderCoorDinatey][LadderCoorDinatex+1] = 5
+                        LadderCoorDinatex += 2
+                    }
+                    else if(LadderArr[LadderCoorDinatey][LadderCoorDinatex-1] == 2){
+                        LadderArr[LadderCoorDinatey][LadderCoorDinatex] = 4
+                        LadderArr[LadderCoorDinatey][LadderCoorDinatex-1] = 5
+                        LadderCoorDinatex -= 2
+                    }
+                }
+                LadderArr[LadderCoorDinatey][LadderCoorDinatex] = 4
+                LadderCoorDinatey += 1
+            }//while
+        }//func
     
     func randomAnswer(){
         numberOfWinner = 0
@@ -118,7 +198,6 @@ struct LadderGame: View {
                 numberOfWinner += 1
             }
         }
-        
     }//func
     
     

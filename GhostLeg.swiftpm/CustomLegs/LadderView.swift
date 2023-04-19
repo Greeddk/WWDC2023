@@ -31,9 +31,9 @@ struct LadderView: View {
                 .foregroundColor(.blue)                
             }
             .onAppear {
-                SoundPlayer.shared.playSound(named: "Fun", withExtension: ".mp3")
+                SoundPlayer.shared.stop()
+                SoundPlayer.shared.playSound(named: "New Rally X", withExtension: ".mp3")
             }
-            
     }
 }
 

@@ -20,7 +20,7 @@ struct CustomLadderGame: View {
         
         @State var atLeastOneHorizontal : Bool = true
         
-        let LadderImg : [String] = ["Vertical", "Space", "Horizontal","None"]
+        let LadderImg : [String] = ["Vertical", "Space", "Horizontal2","None"]
         let PlayerName : [String] = ["P1", "P2","P3", "P4", "P5", "P6", "P7", "P8"]
         
         @State var AnswerArr : [Int] = [0,0,1,0,0,0,0,0]
@@ -128,6 +128,7 @@ struct CustomLadderGame: View {
                     numberOfWinner += 1
                 }
             }
+            AnswerArr.shuffle()
         }//func
         
         func examineHorizontal() {

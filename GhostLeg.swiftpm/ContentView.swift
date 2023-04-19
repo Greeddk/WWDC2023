@@ -2,13 +2,33 @@ import SwiftUI
 
 struct ContentView: View {
     
+    @State private var showInfoModal: Bool = false
+    
     var body: some View {
         
         NavigationView {
             
             VStack {
+                HStack{
+                    Button {
+                        showInfoModal = true
+                    } label: {
+                        Image(systemName: "info.circle")
+                            .resizable()
+                            .frame(width:24,height: 24)
+                    }
+                    .sheet(isPresented: $showInfoModal){
+                        InfoView()
+                    }
+                    Spacer()
+                }
+                .padding(20)
                 Spacer()
-                Image("Icon")
+                Image("PortalLeft")
+                    .resizable()
+                    .scaledToFit()
+                    .frame(width: 200, height: 200)
+                Image("PortalRight")
                     .resizable()
                     .scaledToFit()
                     .frame(width: 200, height: 200)
@@ -34,11 +54,10 @@ struct ContentView: View {
                 Spacer()
             }
         }
+        .onAppear {
+            SoundPlayer.shared.playSound(named: "Fun", withExtension: ".mp3")
+        }
         .navigationViewStyle(StackNavigationViewStyle())
-        
-        
-        
-        
     }
 }
 

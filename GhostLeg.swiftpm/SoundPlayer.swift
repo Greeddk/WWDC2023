@@ -1,10 +1,3 @@
-//
-//  File.swift
-//  
-//
-//  Created by Greed on 2023/04/19.
-//
-
 import Foundation
 import AVKit
 

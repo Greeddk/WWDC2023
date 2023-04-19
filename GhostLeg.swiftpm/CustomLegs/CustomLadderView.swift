@@ -18,7 +18,10 @@ struct CustomLadderView: View {
                 Text("2. You can check the result by following the line directly from each starting point, or you can check the result at once")
                 Text(" by pressing the result button at the bottom.")
             }
-            
+            .onAppear {
+                SoundPlayer.shared.stop()
+                SoundPlayer.shared.playSound(named: "New Rally X", withExtension: ".mp3")
+            }
             CustomLadderGame()
             NavigationLink("Next Page") {
                 Description()
@@ -26,6 +29,7 @@ struct CustomLadderView: View {
             .font(.largeTitle)
             .foregroundColor(.blue)
         }
+    
     }
 }
 
