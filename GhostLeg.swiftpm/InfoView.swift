@@ -24,8 +24,6 @@ struct InfoView: View {
         }
         CardView{
             VStack{
-                
-                
                 VStack(alignment: .leading){
                     HStack{
                         Spacer()

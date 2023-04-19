@@ -8,18 +8,18 @@ import PackageDescription
 import AppleProductTypes
 
 let package = Package(
-    name: "GhostLeg",
+    name: "Portal leg",
     platforms: [
         .iOS("15.2")
     ],
     products: [
         .iOSApplication(
-            name: "GhostLeg",
+            name: "Portal leg",
             targets: ["AppModule"],
             bundleIdentifier: "com.greed.GhostLeg",
             displayVersion: "1.0",
             bundleVersion: "1",
-            appIcon: .placeholder(icon: .movieReel),
+            appIcon: .placeholder(icon: .twoPeople),
             accentColor: .presetColor(.indigo),
             supportedDeviceFamilies: [
                 .pad,

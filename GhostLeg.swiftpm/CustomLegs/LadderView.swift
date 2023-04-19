@@ -17,10 +17,8 @@ struct LadderView: View {
                 Text("Ladder Lottery Game")
                 Spacer()
                 VStack(alignment: .leading) {
-                    Text("Description").font(.largeTitle)
-                    Text("1. Each participant starts at the top of the ladder and moves down the ladder using a horizontal line to the right or left.")
-                    Text("2. You can check the result by following the line directly from each starting point, or you can check the result at once")
-                    Text(" by pressing the result button at the bottom.")
+                    Text("How to play?").font(.largeTitle)
+                    Text("1. each participant starts at the top of the ladder and follows a horizontal line down the ladder to the right or left. \n2. Tap the player name at each starting point to see the corresponding result, or click the Results button at the bottom to see the results all at once.")
                 }
                 
                 LadderGame()

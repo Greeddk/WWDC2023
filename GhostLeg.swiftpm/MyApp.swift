@@ -6,9 +6,10 @@ struct MyApp: App {
     
     var body: some Scene {
         WindowGroup {
-            ContentView()
-                .environmentObject(data)
-            
+            NavigationView{
+                ContentView()
+            }.navigationViewStyle(StackNavigationViewStyle())
+            .environmentObject(data)
         }
     }
 }

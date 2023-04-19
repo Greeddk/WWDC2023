@@ -14,8 +14,9 @@ struct LadderGame: View {
     @State var RedLadder : [[Int]] = []
     
     @State var atLeastOneHorizontal : Bool = true
+    @State private var showInfoModal: Bool = false
     
-    let LadderImg : [String] = ["Vertical", "Space", "Horizontal3","None", "VerticalRed", "HorizontalRed2"]
+    let LadderImg : [String] = ["Vertical", "Space", "Horizontal0","None", "VerticalRed", "HorizontalRed0"]
     let PlayerName : [String] = ["P1", "P2","P3", "P4", "P5", "P6", "P7", "P8"]
     
     @State var AnswerArr : [Int] = [0,0,1,0,0,0,0,0]
@@ -34,7 +35,6 @@ struct LadderGame: View {
     
     var body: some View {
         VStack{
-            ZStack{
                 HStack{
                     VStack {
                         Button(PlayerName[0]){
@@ -68,7 +68,6 @@ struct LadderGame: View {
                         }
                     }
                 }//HStack
-            }
             
             Spacer().frame(height: 50)
             Button(action: {
@@ -121,18 +120,19 @@ struct LadderGame: View {
                     randomAnswer()
                 }
             //결과 보여주는 버튼
-            Button("Show Result") {
-                showingAlert = true
+            Button {
+                showInfoModal = true
+            } label: {
+                Text("Show Result")
             }
-            .alert("Result", isPresented: $showingAlert) {
-                Button("Ok") {}
-            } message: {
+            .sheet(isPresented: $showInfoModal){
                 Text(LadderResult)
+                    .font(.title)
             }
         }//VStack
         .padding(.all, 20.0)
     }
-    // Mark: - 빨간색으로 결과까지 이어주는 함수
+    // MARK: - 빨간색 선
     func redLine(_ playerNumber : Int){
         //VerticalRed:4, HorizontalRed:5
         //dfs
@@ -233,8 +233,7 @@ struct LadderGame: View {
         //dfs
         LadderCoorDinatex = 2*playerNumber
         LadderCoorDinatey = 0
-        
-        while(LadderCoorDinatey != 6){
+            while(LadderCoorDinatey != 6){
             
             if(LadderCoorDinatex == 0){
                 if(LadderArr[LadderCoorDinatey+1][LadderCoorDinatex+1] == 2){

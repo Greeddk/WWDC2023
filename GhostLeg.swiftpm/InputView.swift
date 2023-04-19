@@ -72,20 +72,6 @@ struct InputView: View {
         }
     }
     
-//    func randomAnswer(){
-//        data.AnswerArr = []
-//        //루저 수만큼 0을 append
-//        for _ in 0..<(data.numberOfPeople-data.numberOfWinner) {
-//            data.AnswerArr.append(0)
-//        }
-//        //위너 수만큼 1을 append
-//        for _ in 0..<data.numberOfWinner {
-//            data.AnswerArr.append(1)
-//        }
-//        data.AnswerArr.shuffle()
-//        print(data.AnswerArr)
-//    }//func
- 
     
 }
 
