@@ -8,19 +8,19 @@ import PackageDescription
 import AppleProductTypes
 
 let package = Package(
-    name: "Portal leg",
+    name: "Portal Ladder",
     platforms: [
         .iOS("15.2")
     ],
     products: [
         .iOSApplication(
-            name: "Portal leg",
+            name: "Portal Ladder",
             targets: ["AppModule"],
             bundleIdentifier: "com.greed.GhostLeg",
             displayVersion: "1.0",
             bundleVersion: "1",
-            appIcon: .placeholder(icon: .twoPeople),
-            accentColor: .presetColor(.indigo),
+            appIcon: .placeholder(icon: .gamepad),
+            accentColor: .presetColor(.blue),
             supportedDeviceFamilies: [
                 .pad,
                 .phone

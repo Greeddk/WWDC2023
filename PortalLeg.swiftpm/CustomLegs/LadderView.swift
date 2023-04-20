@@ -12,13 +12,13 @@ struct LadderView: View {
     
     
     var body: some View {
-        
             VStack {
-                Text("Ladder Lottery Game")
+                Text("Ladder Game")
+                    .font(.title)
                 Spacer()
                 VStack(alignment: .leading) {
                     Text("How to play?").font(.largeTitle).foregroundColor(.teal)
-                    Text("1. each participant starts at the top of the ladder and follows a horizontal line down the ladder to the right or left. \n2. Tap the player name at each starting point to see the corresponding result, or click the Results button at the bottom to see the results all at once.")
+                    Text("1. each participant starts at the top of the ladder and follows a horizontal line down the ladder to the right or left. \n2. Tap a player's name at the top of the ladder to see the corresponding result, or click the Results button at the bottom to see the results all at once.")
                 }
                 
                 LadderGame()
@@ -26,7 +26,7 @@ struct LadderView: View {
                     Description()
                 }
                 .font(.largeTitle)
-                .foregroundColor(.blue)                
+                .foregroundColor(.blue)
             }
             .onAppear {
                 SoundPlayer.shared.stop()

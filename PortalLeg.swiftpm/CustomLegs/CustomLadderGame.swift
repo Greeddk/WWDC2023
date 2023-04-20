@@ -42,37 +42,51 @@ struct CustomLadderGame: View {
     
     var body: some View {
         VStack{
-            HStack{
-                //가로 사다리
-                VStack {
-                    ForEach(0..<9, id: \.self) { i in
-                        Image(LadderImg[LadderArr[i][0]])
-                            .resizable().aspectRatio(contentMode: .fit)
-                    }.padding([.leading, .trailing], -10)
-                }.onAppear{
-                    randomAnswer()
-                }
-                ForEach(1..<(data.numberOfPeople)+1, id: \.self) { i in
-                    //세로 사다리
-                    VStack {
-                        Button(PlayerName[i-1]){
-                            redLine(i-1)
-                        }
-                        ForEach(0..<9, id: \.self) { j in
-                            Image(LadderImg[LadderArr[j][(i * 2) - 1]])
-                                .resizable().aspectRatio(contentMode: .fit)
-                        }.padding(.top, -20)
-                        Text("\(AnswerText[AnswerArr[i-1]])")
-                    }
+            ZStack{
+                Image("PortalLeft")
+                    .resizable()
+                    .frame(width: 200)
+                    .offset(x:CGFloat(-55*data.numberOfPeople-50))
+                Image("PortalRight")
+                    .resizable()
+                    .frame(width: 200)
+                    .offset(x:CGFloat(55*data.numberOfPeople+50))
+                HStack{
                     //가로 사다리
                     VStack {
-                        ForEach(0..<9, id: \.self) { j in
-                            Image(LadderImg[LadderArr[j][i*2]])
+                        ForEach(0..<9, id: \.self) { i in
+                            Image(LadderImg[LadderArr[i][0]])
                                 .resizable().aspectRatio(contentMode: .fit)
                         }.padding([.leading, .trailing], -10)
+                    }.onAppear{
+                        randomAnswer()
                     }
-                }
-            }//HStack
+                    ForEach(1..<(data.numberOfPeople)+1, id: \.self) { i in
+                        //세로 사다리
+                        VStack {
+                            Button(PlayerName[i-1]){
+                                redLine(i-1)
+                            }
+                            ForEach(0..<9, id: \.self) { j in
+                                Image(LadderImg[LadderArr[j][(i * 2) - 1]])
+                                    .resizable().aspectRatio(contentMode: .fit)
+                            }.padding(.top, -20)
+                            Text("\(AnswerText[AnswerArr[i-1]])")
+                        }
+                        //가로 사다리
+                        VStack {
+                            ForEach(0..<9, id: \.self) { j in
+                                Image(LadderImg[LadderArr[j][i*2]])
+                                    .resizable().aspectRatio(contentMode: .fit)
+                            }.padding([.leading, .trailing], -10)
+                        }
+                    }
+                }//HStack
+//                Image("PortalLeft")
+//                    .resizable()
+//                    .frame(width: 200)
+//                    .offset(x:-490)
+            }//ZStack
             Spacer().frame(height: 50)
             Button(action: {
                 //사다리 생성을 위한 배열값 입력
